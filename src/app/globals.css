@@ -1,0 +1,105 @@
+@import "tailwindcss";
+
+/* ----------------------------------------------------------------------------
+   American Cordillera — design tokens (Tailwind v4, CSS-first)
+   Brand: deep navy + terracotta + cream, with a layered cordillera motif.
+   Each --color-* token generates bg-* / text-* / border-* utilities.
+---------------------------------------------------------------------------- */
+@theme {
+  /* Navy family */
+  --color-navy: #14233c;
+  --color-navy-800: #182a45;
+  --color-navy-700: #1e3552;
+  --color-navy-600: #294060;
+  --color-navy-500: #36537d;
+
+  /* Terracotta / accent */
+  --color-terra: #c75b33;
+  --color-terra-bright: #e07a3e;
+  --color-terra-700: #a8431f;
+  --color-terra-50: #f6e9e1;
+
+  /* Warm neutrals (marketing + donation) */
+  --color-cream: #faf6ef;
+  --color-cream-200: #f2ece0;
+  --color-cream-300: #ece4d4;
+  --color-line: #e4dccb;
+  --color-line-soft: #efe8da;
+
+  /* Cool neutrals (community app surfaces) */
+  --color-paper: #ffffff;
+  --color-surface: #f6f7f9;
+  --color-surface-line: #e7eaee;
+
+  /* Ink */
+  --color-ink: #33414f;
+  --color-muted: #6b7a8a;
+
+  /* Fonts (bridged from next/font CSS variables) */
+  --font-sans: var(--font-inter);
+  --font-display: var(--font-poppins);
+  --font-serif: var(--font-lora);
+
+  /* Radii */
+  --radius-xl: 0.875rem;
+  --radius-2xl: 1.125rem;
+}
+
+/* Resolve next/font variables at definition time. */
+@theme inline {
+  --font-sans: var(--font-inter);
+  --font-display: var(--font-poppins);
+  --font-serif: var(--font-lora);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    background-color: var(--color-cream);
+    color: var(--color-ink);
+    font-family: var(--font-sans), system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  ::selection {
+    background-color: color-mix(in srgb, var(--color-terra) 22%, transparent);
+  }
+  h1, h2, h3, h4, h5 {
+    font-family: var(--font-display), system-ui, sans-serif;
+    color: var(--color-navy);
+    letter-spacing: -0.01em;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-terra);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+}
+
+@layer components {
+  .kicker {
+    font-family: var(--font-display), sans-serif;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--color-terra);
+  }
+  .container-ac {
+    width: 100%;
+    max-width: 76rem;
+    margin-inline: auto;
+    padding-inline: 1.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
