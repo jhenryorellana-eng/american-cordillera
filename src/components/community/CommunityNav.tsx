@@ -7,6 +7,7 @@ import { COMMUNITY_SPACES } from "@/lib/constants";
 import { Icon, type IconName } from "@/components/icons";
 import { cn } from "@/components/ui";
 
+/** Desktop-only vertical sidebar (mobile uses CommunityBottomNav). */
 export function CommunityNav({ isMember }: { isMember: boolean }) {
   const { dict } = useI18n();
   const pathname = usePathname();
@@ -18,14 +19,8 @@ export function CommunityNav({ isMember }: { isMember: boolean }) {
     dict.community.spaces[key as keyof typeof dict.community.spaces];
 
   return (
-    <aside className="lg:w-56 lg:shrink-0">
-      <nav
-        className={cn(
-          "flex gap-1 overflow-x-auto pb-2",
-          "lg:sticky lg:top-20 lg:flex-col lg:overflow-visible lg:pb-0",
-        )}
-      >
-        {/* Feed */}
+    <aside className="hidden w-56 shrink-0 lg:block">
+      <nav className="sticky top-20 flex flex-col gap-1">
         {COMMUNITY_SPACES.slice(0, 1).map((s) => (
           <NavItem
             key={s.key}
@@ -36,7 +31,7 @@ export function CommunityNav({ isMember }: { isMember: boolean }) {
           />
         ))}
 
-        <p className="hidden px-3 pb-1 pt-4 font-display text-[0.7rem] font-semibold uppercase tracking-wider text-muted lg:block">
+        <p className="px-3 pb-1 pt-4 font-display text-[0.7rem] font-semibold uppercase tracking-wider text-muted">
           {dict.nav.community}
         </p>
 
@@ -72,10 +67,8 @@ function NavItem({
     <Link
       href={href}
       className={cn(
-        "flex shrink-0 items-center gap-2.5 rounded-xl px-3 py-2 text-sm font-medium transition-colors",
-        active
-          ? "bg-navy text-white"
-          : "text-ink hover:bg-navy/[0.05] hover:text-navy",
+        "flex items-center gap-2.5 rounded-xl px-3 py-2 text-sm font-medium transition-colors",
+        active ? "bg-navy text-white" : "text-ink hover:bg-navy/[0.05] hover:text-navy",
       )}
     >
       <Icon name={icon} size={18} />

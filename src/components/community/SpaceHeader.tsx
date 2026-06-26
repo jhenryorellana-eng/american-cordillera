@@ -15,8 +15,8 @@ export function SpaceHeader({
       <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-terra-50 text-terra">
         <Icon name={icon} size={22} />
       </span>
-      <div>
-        <h1 className="text-2xl font-extrabold text-navy">{title}</h1>
+      <div className="min-w-0">
+        <h1 className="text-xl font-extrabold text-navy sm:text-2xl">{title}</h1>
         {subtitle && <p className="text-sm text-muted">{subtitle}</p>}
       </div>
     </div>
@@ -26,7 +26,7 @@ export function SpaceHeader({
 /** Branded gradient banner shown at the top of community spaces. */
 export function SpaceBanner({ label }: { label?: string }) {
   return (
-    <div className="relative mb-6 flex h-36 items-center justify-center overflow-hidden rounded-2xl bg-gradient-to-br from-navy via-navy-700 to-terra">
+    <div className="relative mb-6 flex h-28 items-center justify-center overflow-hidden rounded-2xl bg-gradient-to-br from-navy via-navy-700 to-terra sm:h-36">
       <div className="flex flex-col items-center text-white">
         <MountainGlyph size={46} className="text-white/90" />
         <p className="mt-2 font-display text-sm font-bold uppercase tracking-[0.25em]">

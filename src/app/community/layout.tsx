@@ -1,6 +1,7 @@
 import { getCurrentUser, isMember } from "@/lib/auth";
 import { SiteHeader } from "@/components/SiteHeader";
 import { CommunityNav } from "@/components/community/CommunityNav";
+import { CommunityBottomNav } from "@/components/community/CommunityBottomNav";
 
 export default async function CommunityLayout({
   children,
@@ -13,10 +14,12 @@ export default async function CommunityLayout({
   return (
     <div className="flex min-h-screen flex-col bg-surface">
       <SiteHeader />
-      <div className="container-ac flex w-full flex-1 flex-col gap-6 py-6 lg:flex-row">
+      <div className="container-ac flex w-full flex-1 gap-6 py-4 lg:py-6">
         <CommunityNav isMember={member} />
-        <main className="min-w-0 flex-1">{children}</main>
+        {/* pb leaves room for the fixed mobile bottom nav */}
+        <main className="min-w-0 flex-1 pb-28 lg:pb-0">{children}</main>
       </div>
+      <CommunityBottomNav isMember={member} />
     </div>
   );
 }
