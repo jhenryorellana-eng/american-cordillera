@@ -21,6 +21,10 @@ const poppins = Poppins({
   display: "swap",
 });
 
+// This app is fully data/session-driven — never prerender at build time
+// (avoids hitting the database during `next build`).
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "American Cordillera — From the Rockies to the Andes",
   description:
