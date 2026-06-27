@@ -3,6 +3,7 @@ import { getDict } from "@/lib/i18n/server";
 import { formatDate } from "@/lib/format";
 import { SpaceHeader, SpaceBanner } from "@/components/community/SpaceHeader";
 import { Badge } from "@/components/ui";
+import { Stagger, StaggerItem } from "@/components/motion";
 
 const CAT: Record<string, { en: string; es: string }> = {
   OPPORTUNITY: { en: "Opportunity", es: "Oportunidad" },
@@ -30,11 +31,11 @@ export default async function ObservatoryPage() {
           {O.empty}
         </div>
       ) : (
-        <div className="space-y-4">
+        <Stagger className="space-y-4">
           {posts.map((p) => {
             const cat = CAT[p.category];
             return (
-              <article
+              <StaggerItem
                 key={p.id}
                 className="rounded-2xl border border-surface-line bg-paper p-6"
               >
@@ -51,10 +52,10 @@ export default async function ObservatoryPage() {
                 <p className="mt-3 text-[0.95rem] leading-relaxed text-ink/85">
                   {p.summary}
                 </p>
-              </article>
+              </StaggerItem>
             );
           })}
-        </div>
+        </Stagger>
       )}
     </div>
   );

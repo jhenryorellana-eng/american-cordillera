@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { motion } from "motion/react";
 import { useI18n } from "@/lib/i18n/client";
 import { Avatar, Badge, Input, cn } from "@/components/ui";
 import { Icon } from "@/components/icons";
@@ -134,11 +135,17 @@ function PostCard({ post, loggedIn }: { post: PostDTO; loggedIn: boolean }) {
         <button
           onClick={toggleReaction}
           className={cn(
-            "flex items-center gap-1.5 rounded-full px-2 py-1 transition-colors",
+            "flex items-center gap-1.5 rounded-full px-2 py-1 transition active:scale-90",
             reacted ? "text-terra" : "text-muted hover:text-navy",
           )}
         >
-          <span className="text-base">👏</span>
+          <motion.span
+            className="text-base"
+            animate={{ scale: reacted ? [1, 1.4, 1] : 1 }}
+            transition={{ duration: 0.3 }}
+          >
+            👏
+          </motion.span>
           {count > 0 && <span>{count}</span>}
         </button>
         <button

@@ -5,6 +5,7 @@ import { INTELLIGENCES } from "@/lib/constants";
 import { SpaceHeader, SpaceBanner } from "@/components/community/SpaceHeader";
 import { Badge } from "@/components/ui";
 import { Icon } from "@/components/icons";
+import { Stagger, StaggerItem } from "@/components/motion";
 
 export default async function ChaptersPage() {
   const { locale, dict } = await getDict();
@@ -27,13 +28,13 @@ export default async function ChaptersPage() {
       <SpaceHeader icon="chapters" title={C.title} subtitle={C.subtitle} />
       <SpaceBanner label="Programa Genesix" />
 
-      <div className="grid gap-5 md:grid-cols-2">
+      <Stagger className="grid gap-5 md:grid-cols-2">
         {chapters.map((c) => {
           const st = statusMeta(c.status);
           const pct = Math.round((c.currentWeek / 7) * 100);
           const intel = INTELLIGENCES.find((i) => i.week === c.currentWeek);
           return (
-            <article
+            <StaggerItem
               key={c.id}
               className="flex flex-col rounded-2xl border border-surface-line bg-paper p-6"
             >
@@ -82,10 +83,10 @@ export default async function ChaptersPage() {
                   {C.sponsorCta} <Icon name="arrowRight" size={15} />
                 </Link>
               </div>
-            </article>
+            </StaggerItem>
           );
         })}
-      </div>
+      </Stagger>
     </div>
   );
 }

@@ -7,6 +7,7 @@ import { SpaceHeader, SpaceBanner } from "@/components/community/SpaceHeader";
 import { RsvpButton } from "@/components/community/RsvpButton";
 import { Badge, cn } from "@/components/ui";
 import { Icon } from "@/components/icons";
+import { Stagger, StaggerItem } from "@/components/motion";
 
 export default async function EventsPage({
   searchParams,
@@ -133,11 +134,11 @@ export default async function EventsPage({
         [...groups.entries()].map(([month, items]) => (
           <section key={month} className="mb-8">
             <h3 className="mb-3 text-lg font-bold text-navy">{month}</h3>
-            <div className="space-y-3">
+            <Stagger className="space-y-3">
               {items.map((e) => {
                 const chip = dayChip(e.startsAt, locale);
                 return (
-                  <div
+                  <StaggerItem
                     key={e.id}
                     className="flex flex-col gap-4 rounded-2xl border border-surface-line bg-paper p-4 sm:flex-row sm:items-center"
                   >
@@ -165,10 +166,10 @@ export default async function EventsPage({
                         loggedIn={!!user}
                       />
                     </div>
-                  </div>
+                  </StaggerItem>
                 );
               })}
-            </div>
+            </Stagger>
           </section>
         ))
       )}

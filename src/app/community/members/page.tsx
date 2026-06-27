@@ -2,6 +2,7 @@ import { prisma } from "@/lib/prisma";
 import { getDict } from "@/lib/i18n/server";
 import { SpaceHeader, SpaceBanner } from "@/components/community/SpaceHeader";
 import { Avatar, Badge } from "@/components/ui";
+import { Stagger, StaggerItem } from "@/components/motion";
 
 const ROLE_LABEL: Record<string, { en: string; es: string; tone: "neutral" | "navy" | "terra" | "green" }> = {
   MEMBER: { en: "Youth", es: "Joven", tone: "neutral" },
@@ -19,7 +20,7 @@ export default async function MembersPage() {
       <SpaceHeader icon="members" title={dict.community.membersDir.title} />
       <SpaceBanner />
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <Stagger className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {members.map((m) => {
           const role = ROLE_LABEL[m.role] ?? ROLE_LABEL.MEMBER;
           const since = new Intl.DateTimeFormat(locale === "es" ? "es-ES" : "en-US", {
@@ -27,7 +28,7 @@ export default async function MembersPage() {
             year: "numeric",
           }).format(m.createdAt);
           return (
-            <div
+            <StaggerItem
               key={m.id}
               className="rounded-2xl border border-surface-line bg-paper p-5"
             >
@@ -44,10 +45,10 @@ export default async function MembersPage() {
                 {(m.city || m.country) && " · "}
                 {dict.community.membersDir.memberSince} {since}
               </p>
-            </div>
+            </StaggerItem>
           );
         })}
-      </div>
+      </Stagger>
     </div>
   );
 }

@@ -3,6 +3,7 @@ import { getDict } from "@/lib/i18n/server";
 import { formatDate } from "@/lib/format";
 import { SpaceHeader, SpaceBanner } from "@/components/community/SpaceHeader";
 import { Icon } from "@/components/icons";
+import { Stagger, StaggerItem } from "@/components/motion";
 
 export default async function PodcastPage() {
   const { locale, dict } = await getDict();
@@ -19,11 +20,11 @@ export default async function PodcastPage() {
       {episodes.length === 0 ? (
         <Empty text={P.empty} />
       ) : (
-        <div className="grid gap-5 sm:grid-cols-2">
+        <Stagger className="grid gap-5 sm:grid-cols-2">
           {episodes.map((e) => (
-            <article
+            <StaggerItem
               key={e.id}
-              className="overflow-hidden rounded-2xl border border-surface-line bg-paper transition-shadow hover:shadow-sm"
+              className="overflow-hidden rounded-2xl border border-surface-line bg-paper transition-shadow hover:shadow-md"
             >
               <div className="relative flex h-40 items-center justify-center bg-gradient-to-br from-navy via-navy-700 to-terra">
                 <span className="flex h-12 w-12 items-center justify-center rounded-full bg-white/90 text-navy">
@@ -48,9 +49,9 @@ export default async function PodcastPage() {
                   {formatDate(e.publishedAt, locale)}
                 </p>
               </div>
-            </article>
+            </StaggerItem>
           ))}
-        </div>
+        </Stagger>
       )}
     </div>
   );

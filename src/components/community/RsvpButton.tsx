@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { motion } from "motion/react";
 import { useI18n } from "@/lib/i18n/client";
 import { Button, cn } from "@/components/ui";
 import { Icon } from "@/components/icons";
@@ -46,9 +47,18 @@ export function RsvpButton({
         variant={going ? "secondary" : "outline"}
         onClick={toggle}
         disabled={loading}
-        className={cn(going && "gap-1.5")}
+        className={cn("transition-transform active:scale-[0.97]", going && "gap-1.5")}
       >
-        {going && <Icon name="check" size={15} />}
+        {going && (
+          <motion.span
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ type: "spring", stiffness: 500, damping: 18 }}
+            className="flex"
+          >
+            <Icon name="check" size={15} />
+          </motion.span>
+        )}
         {going ? dict.community.events.youAreGoing : dict.community.events.rsvp}
       </Button>
       {count > 0 && (

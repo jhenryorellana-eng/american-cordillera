@@ -69,6 +69,12 @@ export function CommunityMobileNav({ isMember }: { isMember: boolean }) {
               animate={{ x: 0 }}
               exit={{ x: "-100%" }}
               transition={{ type: "spring", stiffness: 360, damping: 36 }}
+              drag="x"
+              dragConstraints={{ left: 0, right: 0 }}
+              dragElastic={{ left: 0.5, right: 0 }}
+              onDragEnd={(_, info) => {
+                if (info.offset.x < -60) setOpen(false);
+              }}
             >
               <div className="flex items-center justify-between px-5 pb-2 pt-5">
                 <span className="font-display text-xs font-semibold uppercase tracking-[0.18em] text-muted">
