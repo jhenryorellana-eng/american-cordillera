@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { useI18n } from "@/lib/i18n/client";
 import { Icon } from "./icons";
@@ -10,6 +10,16 @@ import { Icon } from "./icons";
 export function MobileMenu() {
   const { dict } = useI18n();
   const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [open]);
+
   const links: Array<[string, string]> = [
     [dict.nav.community, "/community"],
     [dict.nav.donate, "/donate"],

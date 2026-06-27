@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion } from "motion/react";
 import { useI18n } from "@/lib/i18n/client";
@@ -72,6 +72,18 @@ function DonateModal({ tier, onClose }: { tier: Tier; onClose: () => void }) {
   const copy = locale === "es" ? tier.es : tier.en;
   const [loading, setLoading] = useState(false);
   const [done, setDone] = useState(false);
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    document.addEventListener("keydown", onKey);
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = "";
+    };
+  }, [onClose]);
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
