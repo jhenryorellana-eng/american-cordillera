@@ -5,6 +5,7 @@ import { SiteFooter } from "@/components/SiteFooter";
 import { LinkButton, Kicker, Badge } from "@/components/ui";
 import { MountainGlyph, MountainDivider } from "@/components/Mountain";
 import { Icon } from "@/components/icons";
+import { Reveal, RevealSection } from "@/components/motion";
 
 export default async function LandingPage() {
   const { locale, dict } = await getDict();
@@ -17,7 +18,7 @@ export default async function LandingPage() {
       {/* ---------------- HERO ---------------- */}
       <section className="relative overflow-hidden">
         <div className="container-ac grid items-center gap-12 py-16 md:grid-cols-2 md:py-24">
-          <div>
+          <Reveal>
             <Kicker>{L.kicker}</Kicker>
             <h1 className="mt-5 text-5xl font-extrabold leading-[1.04] tracking-tight text-navy sm:text-6xl">
               {L.h1a}
@@ -36,7 +37,7 @@ export default async function LandingPage() {
                 {L.ctaDonate}
               </LinkButton>
             </div>
-          </div>
+          </Reveal>
 
           {/* Brand visual card */}
           <div className="relative">
@@ -59,7 +60,7 @@ export default async function LandingPage() {
       </section>
 
       {/* ---------------- MODEL IN THREE WORDS ---------------- */}
-      <section className="container-ac py-16">
+      <RevealSection className="container-ac py-16">
         <Kicker>{L.modelKicker}</Kicker>
         <div className="mt-8 grid gap-5 md:grid-cols-3">
           {[
@@ -79,10 +80,10 @@ export default async function LandingPage() {
             </div>
           ))}
         </div>
-      </section>
+      </RevealSection>
 
       {/* ---------------- THREE SPACES ---------------- */}
-      <section className="container-ac py-16">
+      <RevealSection className="container-ac py-16">
         <Kicker>{L.spacesKicker}</Kicker>
         <h2 className="mt-3 max-w-xl text-4xl font-extrabold leading-tight text-navy">
           {L.spacesTitle}
@@ -115,10 +116,10 @@ export default async function LandingPage() {
             </div>
           ))}
         </div>
-      </section>
+      </RevealSection>
 
       {/* ---------------- PILOT TRUJILLO ---------------- */}
-      <section className="container-ac py-16">
+      <RevealSection className="container-ac py-16">
         <div className="rounded-3xl border border-line bg-cream-200/60 p-8 md:p-12">
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div>
@@ -172,10 +173,10 @@ export default async function LandingPage() {
             </div>
           </div>
         </div>
-      </section>
+      </RevealSection>
 
       {/* ---------------- PROMISE BAND ---------------- */}
-      <section className="relative mt-8 bg-navy">
+      <RevealSection className="relative mt-8 bg-navy">
         <div className="container-ac py-16 text-center">
           <Kicker className="text-terra-bright">
             {locale === "es" ? "La promesa" : "The promise"}
@@ -193,7 +194,7 @@ export default async function LandingPage() {
             </LinkButton>
           </div>
         </div>
-      </section>
+      </RevealSection>
 
       <SiteFooter />
     </div>

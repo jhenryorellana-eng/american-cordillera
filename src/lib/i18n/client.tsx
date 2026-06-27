@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useContext } from "react";
+import { MotionConfig } from "motion/react";
 import { dictionaries, type Dict, type Locale } from "./dictionaries";
 
 type I18nValue = { locale: Locale; dict: Dict };
@@ -19,7 +20,7 @@ export function I18nProvider({
 }) {
   return (
     <I18nContext.Provider value={{ locale, dict: dictionaries[locale] }}>
-      {children}
+      <MotionConfig reducedMotion="user">{children}</MotionConfig>
     </I18nContext.Provider>
   );
 }
