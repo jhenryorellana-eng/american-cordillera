@@ -1,9 +1,11 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
+import { AnimatePresence, motion } from "motion/react";
 import { useI18n } from "@/lib/i18n/client";
 import { Button, Input, Label, Badge, cn } from "@/components/ui";
 import { Icon } from "@/components/icons";
+import { EASE, SuccessCheck } from "@/components/motion";
 
 export type ChapterDTO = {
   id: string;
@@ -67,14 +69,19 @@ export function SponsorFlow({
 
   if (done) {
     return (
-      <div className="rounded-2xl border border-line bg-paper p-10 text-center">
-        <span className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-emerald-50 text-emerald-600">
-          <Icon name="check" size={32} />
-        </span>
+      <motion.div
+        className="rounded-2xl border border-line bg-paper p-10 text-center"
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, ease: EASE }}
+      >
+        <div className="flex justify-center">
+          <SuccessCheck size={64} />
+        </div>
         <h3 className="mt-5 text-2xl font-extrabold text-navy">{S.thanksTitle}</h3>
         <p className="mx-auto mt-2 max-w-md text-muted">{S.thanksBody}</p>
         <p className="mt-2 text-sm text-muted">{S.noPayments}</p>
-      </div>
+      </motion.div>
     );
   }
 
@@ -116,9 +123,16 @@ export function SponsorFlow({
         })}
       </div>
 
-      {/* step 1: country */}
-      {step === 1 && (
-        <div>
+      <AnimatePresence mode="wait">
+        {/* step 1: country */}
+        {step === 1 && (
+        <motion.div
+          key="step1"
+          initial={{ opacity: 0, x: 24 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -24 }}
+          transition={{ duration: 0.3, ease: EASE }}
+        >
           <h3 className="mb-4 text-lg font-bold text-navy">{S.selectCountry}</h3>
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
             {countries.map((c) => {
@@ -133,7 +147,7 @@ export function SponsorFlow({
                     setStep(2);
                   }}
                   className={cn(
-                    "flex items-center justify-between rounded-xl border px-4 py-3 text-left text-sm font-semibold transition-colors",
+                    "flex items-center justify-between rounded-xl border px-4 py-3 text-left text-sm font-semibold transition-colors active:scale-[0.98]",
                     has
                       ? "border-line bg-paper text-navy hover:border-terra hover:bg-terra-50"
                       : "cursor-not-allowed border-line bg-cream-200/40 text-muted",
@@ -153,12 +167,18 @@ export function SponsorFlow({
               );
             })}
           </div>
-        </div>
-      )}
+        </motion.div>
+        )}
 
-      {/* step 2: chapter */}
-      {step === 2 && country && (
-        <div>
+        {/* step 2: chapter */}
+        {step === 2 && country && (
+        <motion.div
+          key="step2"
+          initial={{ opacity: 0, x: 24 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -24 }}
+          transition={{ duration: 0.3, ease: EASE }}
+        >
           <button
             onClick={() => setStep(1)}
             className="mb-4 inline-flex items-center gap-1 text-sm text-muted hover:text-navy"
@@ -191,7 +211,7 @@ export function SponsorFlow({
                       setChapter(ch);
                       setStep(3);
                     }}
-                    className="flex w-full items-center justify-between gap-4 rounded-2xl border border-line bg-paper p-5 text-left transition-colors hover:border-terra"
+                    className="flex w-full items-center justify-between gap-4 rounded-2xl border border-line bg-paper p-5 text-left transition-colors hover:border-terra active:scale-[0.99]"
                   >
                     <div>
                       <div className="flex items-center gap-2">
@@ -209,12 +229,19 @@ export function SponsorFlow({
                 );
               })}
           </div>
-        </div>
-      )}
+        </motion.div>
+        )}
 
-      {/* step 3: confirm */}
-      {step === 3 && chapter && (
-        <div className="max-w-lg">
+        {/* step 3: confirm */}
+        {step === 3 && chapter && (
+        <motion.div
+          key="step3"
+          className="max-w-lg"
+          initial={{ opacity: 0, x: 24 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -24 }}
+          transition={{ duration: 0.3, ease: EASE }}
+        >
           <button
             onClick={() => setStep(2)}
             className="mb-4 inline-flex items-center gap-1 text-sm text-muted hover:text-navy"
@@ -262,8 +289,9 @@ export function SponsorFlow({
               {loading ? dict.common.loading : S.submit}
             </Button>
           </form>
-        </div>
-      )}
+        </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

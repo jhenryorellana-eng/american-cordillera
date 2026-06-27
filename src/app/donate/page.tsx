@@ -8,6 +8,7 @@ import { MountainGlyph } from "@/components/Mountain";
 import { Icon } from "@/components/icons";
 import { DonateTiers } from "@/components/donate/DonateTiers";
 import { NewsletterForm } from "@/components/donate/NewsletterForm";
+import { CountUp, Reveal, RevealSection } from "@/components/motion";
 
 export default async function DonatePage() {
   const { locale, dict } = await getDict();
@@ -20,11 +21,11 @@ export default async function DonatePage() {
   ]);
   const youth = youthAgg._sum.cohortSize ?? 0;
 
-  const stats: Array<[string, string]> = [
-    [String(chapters), locale === "es" ? "Capítulos" : "Chapters"],
-    [String(youth), locale === "es" ? "Jóvenes en formación" : "Youth in training"],
-    [String(countries), locale === "es" ? "Países" : "Countries"],
-    ["7", locale === "es" ? "Semanas por capítulo" : "Weeks per chapter"],
+  const stats: Array<{ value: number; label: string }> = [
+    { value: chapters, label: locale === "es" ? "Capítulos" : "Chapters" },
+    { value: youth, label: locale === "es" ? "Jóvenes en formación" : "Youth in training" },
+    { value: countries, label: locale === "es" ? "Países" : "Countries" },
+    { value: 7, label: locale === "es" ? "Semanas por capítulo" : "Weeks per chapter" },
   ];
 
   return (
@@ -34,7 +35,7 @@ export default async function DonatePage() {
       {/* HERO */}
       <section className="border-b border-line">
         <div className="container-ac grid items-center gap-12 py-16 md:grid-cols-2">
-          <div>
+          <Reveal>
             <Kicker>{D.hero.kicker}</Kicker>
             <h1 className="mt-4 text-4xl font-extrabold leading-tight text-navy sm:text-5xl">
               {D.hero.h1}
@@ -50,7 +51,7 @@ export default async function DonatePage() {
                 {D.hero.ctaSponsor}
               </LinkButton>
             </div>
-          </div>
+          </Reveal>
           <div className="relative aspect-[4/3] overflow-hidden rounded-[1.75rem] bg-gradient-to-br from-terra via-terra-bright to-navy shadow-xl">
             <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-white">
               <MountainGlyph size={72} className="text-white/90" />
@@ -65,17 +66,19 @@ export default async function DonatePage() {
       {/* IMPACT STRIP */}
       <section className="border-b border-line bg-cream-200/50">
         <div className="container-ac grid grid-cols-2 gap-6 py-10 md:grid-cols-4">
-          {stats.map(([big, label]) => (
-            <div key={label} className="text-center">
-              <p className="font-display text-4xl font-extrabold text-navy">{big}</p>
-              <p className="mt-1 text-xs uppercase tracking-wide text-muted">{label}</p>
+          {stats.map((s) => (
+            <div key={s.label} className="text-center">
+              <p className="font-display text-4xl font-extrabold text-navy">
+                <CountUp value={s.value} />
+              </p>
+              <p className="mt-1 text-xs uppercase tracking-wide text-muted">{s.label}</p>
             </div>
           ))}
         </div>
       </section>
 
       {/* WHY */}
-      <section className="container-ac py-16">
+      <RevealSection className="container-ac py-16">
         <Kicker>{D.why.kicker}</Kicker>
         <h2 className="mt-3 max-w-2xl text-3xl font-extrabold leading-tight text-navy sm:text-4xl">
           {D.why.title}
@@ -85,10 +88,10 @@ export default async function DonatePage() {
           <p className="text-[0.98rem] leading-relaxed text-ink/85">{D.why.p2}</p>
         </div>
         <p className="mt-6 font-serif text-2xl text-terra">{D.why.punch}</p>
-      </section>
+      </RevealSection>
 
       {/* TWO DESTINATIONS */}
-      <section className="bg-navy py-16 text-white">
+      <RevealSection className="bg-navy py-16 text-white">
         <div className="container-ac">
           <Kicker className="text-terra-bright">{D.destinations.kicker}</Kicker>
           <h2 className="mt-3 text-3xl font-extrabold text-white sm:text-4xl">
@@ -115,10 +118,10 @@ export default async function DonatePage() {
             </div>
           </div>
         </div>
-      </section>
+      </RevealSection>
 
       {/* PROOF */}
-      <section className="container-ac py-16">
+      <RevealSection className="container-ac py-16">
         <Kicker>{D.proof.kicker}</Kicker>
         <h2 className="mt-3 max-w-2xl text-3xl font-extrabold leading-tight text-navy sm:text-4xl">
           {D.proof.title}
@@ -127,7 +130,7 @@ export default async function DonatePage() {
           <p className="text-[0.98rem] leading-relaxed text-ink/85">{D.proof.p1}</p>
           <p className="text-[0.98rem] leading-relaxed text-ink/85">{D.proof.p2}</p>
         </div>
-      </section>
+      </RevealSection>
 
       {/* TIERS */}
       <DonateTiers />
@@ -152,7 +155,7 @@ export default async function DonatePage() {
       </section>
 
       {/* CLOSING */}
-      <section className="container-ac py-20 text-center">
+      <RevealSection className="container-ac py-20 text-center">
         <Kicker>{D.closing.kicker}</Kicker>
         <h2 className="mx-auto mt-3 max-w-2xl text-4xl font-extrabold text-navy sm:text-5xl">
           {D.closing.title}
@@ -166,7 +169,7 @@ export default async function DonatePage() {
         <p className="mx-auto mt-8 max-w-md text-xs text-muted">
           {FLAGS.taxReceipt501c3 ? D.closing.legal : D.closing.legalPending}
         </p>
-      </section>
+      </RevealSection>
 
       <SiteFooter />
     </div>

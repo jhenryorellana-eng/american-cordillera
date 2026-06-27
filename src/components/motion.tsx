@@ -1,7 +1,7 @@
 "use client";
 
-import { motion, type Variants } from "motion/react";
-import type { ComponentProps, ReactNode } from "react";
+import { animate, motion, useInView, type Variants } from "motion/react";
+import { useEffect, useRef, useState, type ComponentProps, type ReactNode } from "react";
 
 // Shared Apple-like easing (decelerate on enter).
 export const EASE = [0.32, 0.72, 0, 1] as const;
@@ -99,5 +99,65 @@ export function Pressable({
     >
       {children}
     </motion.div>
+  );
+}
+
+/** Counts from 0 to `value` when scrolled into view. */
+export function CountUp({
+  value,
+  className,
+  duration = 1.2,
+}: {
+  value: number;
+  className?: string;
+  duration?: number;
+}) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-40px" });
+  const [display, setDisplay] = useState(0);
+  useEffect(() => {
+    if (!inView) return;
+    const controls = animate(0, value, {
+      duration,
+      ease: EASE,
+      onUpdate: (v) => setDisplay(Math.round(v)),
+    });
+    return () => controls.stop();
+  }, [inView, value, duration]);
+  return (
+    <span ref={ref} className={className}>
+      {display}
+    </span>
+  );
+}
+
+/** Animated checkmark that draws itself in. */
+export function SuccessCheck({ size = 56 }: { size?: number }) {
+  return (
+    <motion.span
+      className="inline-flex items-center justify-center rounded-full bg-emerald-50 text-emerald-600"
+      style={{ width: size, height: size }}
+      initial={{ scale: 0.7, opacity: 0 }}
+      animate={{ scale: 1, opacity: 1 }}
+      transition={SPRING}
+    >
+      <motion.svg
+        width={size * 0.5}
+        height={size * 0.5}
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={3}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <motion.path
+          d="M5 13l4 4L19 7"
+          initial={{ pathLength: 0 }}
+          animate={{ pathLength: 1 }}
+          transition={{ duration: 0.5, ease: EASE, delay: 0.15 }}
+        />
+      </motion.svg>
+    </motion.span>
   );
 }

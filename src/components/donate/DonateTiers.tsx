@@ -2,10 +2,12 @@
 
 import { useState, type FormEvent } from "react";
 import Link from "next/link";
+import { AnimatePresence, motion } from "motion/react";
 import { useI18n } from "@/lib/i18n/client";
 import { DONATION_TIERS } from "@/lib/constants";
 import { Button, Input, Label, Textarea, Kicker, cn } from "@/components/ui";
 import { Icon } from "@/components/icons";
+import { Stagger, StaggerItem, SuccessCheck } from "@/components/motion";
 
 type Tier = (typeof DONATION_TIERS)[number];
 
@@ -19,14 +21,14 @@ export function DonateTiers() {
       <Kicker>{T.kicker}</Kicker>
       <h2 className="mt-3 text-4xl font-extrabold text-navy">{T.title}</h2>
 
-      <div className="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+      <Stagger className="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
         {DONATION_TIERS.map((t) => {
           const copy = locale === "es" ? t.es : t.en;
           const isSponsor = t.key === "CHAPTER_SPONSOR";
           return (
-            <div
+            <StaggerItem
               key={t.key}
-              className="flex flex-col rounded-2xl border border-line bg-paper p-6"
+              className="flex flex-col rounded-2xl border border-line bg-paper p-6 transition-shadow hover:shadow-md"
             >
               <h3 className="text-lg font-bold text-navy">{copy.name}</h3>
               <p className="mt-2 flex-1 text-sm leading-relaxed text-muted">{copy.desc}</p>
@@ -39,19 +41,28 @@ export function DonateTiers() {
                     {dict.donate.nav.sponsor} <Icon name="arrowRight" size={15} />
                   </Link>
                 ) : (
-                  <Button variant="outline" size="sm" onClick={() => setTier(t)}>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setTier(t)}
+                    className="transition-transform active:scale-95"
+                  >
                     {T.choose}
                   </Button>
                 )}
               </div>
-            </div>
+            </StaggerItem>
           );
         })}
-      </div>
+      </Stagger>
 
       <p className="mt-6 max-w-2xl text-sm text-muted">{T.note}</p>
 
-      {tier && <DonateModal tier={tier} onClose={() => setTier(null)} />}
+      <AnimatePresence>
+        {tier && (
+          <DonateModal key="donate-modal" tier={tier} onClose={() => setTier(null)} />
+        )}
+      </AnimatePresence>
     </section>
   );
 }
@@ -83,15 +94,23 @@ function DonateModal({ tier, onClose }: { tier: Tier; onClose: () => void }) {
   }
 
   return (
-    <div
+    <motion.div
       className="fixed inset-0 z-50 flex items-center justify-center bg-navy/40 p-4 backdrop-blur-sm"
       onClick={onClose}
       role="dialog"
       aria-modal="true"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.2 }}
     >
-      <div
+      <motion.div
         className="w-full max-w-md rounded-2xl bg-paper p-7 shadow-xl"
         onClick={(e) => e.stopPropagation()}
+        initial={{ opacity: 0, scale: 0.94, y: 12 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.96, y: 8 }}
+        transition={{ type: "spring", stiffness: 380, damping: 30 }}
       >
         <div className="mb-4 flex items-start justify-between">
           <div>
@@ -105,9 +124,9 @@ function DonateModal({ tier, onClose }: { tier: Tier; onClose: () => void }) {
 
         {done ? (
           <div className="py-6 text-center">
-            <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-emerald-50 text-emerald-600">
-              <Icon name="check" size={28} />
-            </span>
+            <div className="flex justify-center">
+              <SuccessCheck size={56} />
+            </div>
             <h4 className="mt-4 text-lg font-bold text-navy">
               {dict.donate.sponsor.thanksTitle}
             </h4>
@@ -146,7 +165,7 @@ function DonateModal({ tier, onClose }: { tier: Tier; onClose: () => void }) {
             </Button>
           </form>
         )}
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 }
