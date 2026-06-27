@@ -3,10 +3,12 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useI18n } from "@/lib/i18n/client";
+import { useToast } from "@/components/Toast";
 import { Avatar, Button, Input, Textarea } from "@/components/ui";
 
 export function PostComposer({ userName }: { userName: string }) {
-  const { dict } = useI18n();
+  const { locale, dict } = useI18n();
+  const toast = useToast();
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [title, setTitle] = useState("");
@@ -26,6 +28,7 @@ export function PostComposer({ userName }: { userName: string }) {
       setTitle("");
       setBody("");
       setOpen(false);
+      toast(locale === "es" ? "Publicación creada" : "Post published");
       router.refresh();
     }
   }

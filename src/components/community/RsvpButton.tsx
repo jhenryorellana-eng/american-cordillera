@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "motion/react";
 import { useI18n } from "@/lib/i18n/client";
+import { useToast } from "@/components/Toast";
 import { Button, cn } from "@/components/ui";
 import { Icon } from "@/components/icons";
 
@@ -18,7 +19,8 @@ export function RsvpButton({
   initialCount: number;
   loggedIn: boolean;
 }) {
-  const { dict } = useI18n();
+  const { locale, dict } = useI18n();
+  const toast = useToast();
   const router = useRouter();
   const [going, setGoing] = useState(initialGoing);
   const [count, setCount] = useState(initialCount);
@@ -35,6 +37,15 @@ export function RsvpButton({
       const j = await res.json();
       setGoing(j.going);
       setCount(j.count);
+      toast(
+        j.going
+          ? locale === "es"
+            ? "¡Vas a asistir!"
+            : "You're going!"
+          : locale === "es"
+            ? "Asistencia cancelada"
+            : "RSVP cancelled",
+      );
     }
     setLoading(false);
   }

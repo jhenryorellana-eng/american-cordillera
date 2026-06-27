@@ -3,8 +3,9 @@
 import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { motion } from "motion/react";
 import { useI18n } from "@/lib/i18n/client";
-import { Button, Input, Label, cn } from "./ui";
+import { Button, Input, Label, Spinner, cn } from "./ui";
 
 export function AuthForm({ mode }: { mode: "login" | "signup" }) {
   const { dict } = useI18n();
@@ -53,7 +54,12 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
   }
 
   return (
-    <div className="w-full max-w-md rounded-2xl border border-line bg-paper p-8 shadow-sm">
+    <motion.div
+      className="w-full max-w-md rounded-2xl border border-line bg-paper p-8 shadow-sm"
+      initial={{ opacity: 0, y: 16, scale: 0.98 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      transition={{ duration: 0.45, ease: [0.32, 0.72, 0, 1] }}
+    >
       <h1 className="text-2xl font-extrabold text-navy">
         {mode === "signup" ? A.signupTitle : A.loginTitle}
       </h1>
@@ -108,15 +114,26 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
         )}
 
         {error && (
-          <p className="rounded-lg bg-rose-50 px-3 py-2 text-sm text-rose-700">{error}</p>
+          <motion.p
+            key={error}
+            animate={{ x: [0, -8, 8, -6, 6, 0] }}
+            transition={{ duration: 0.4 }}
+            className="rounded-lg bg-rose-50 px-3 py-2 text-sm text-rose-700"
+          >
+            {error}
+          </motion.p>
         )}
 
         <Button type="submit" className="w-full" disabled={loading}>
-          {loading
-            ? dict.common.loading
-            : mode === "signup"
-              ? A.submitSignup
-              : A.submitLogin}
+          {loading ? (
+            <>
+              <Spinner /> {dict.common.loading}
+            </>
+          ) : mode === "signup" ? (
+            A.submitSignup
+          ) : (
+            A.submitLogin
+          )}
         </Button>
       </form>
 
@@ -129,6 +146,6 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
           {mode === "signup" ? dict.common.login : dict.common.signup}
         </Link>
       </p>
-    </div>
+    </motion.div>
   );
 }

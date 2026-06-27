@@ -4,6 +4,7 @@ import { getDict } from "@/lib/i18n/server";
 import { Logo } from "./Mountain";
 import { LocaleToggle } from "./LocaleToggle";
 import { AuthControls } from "./AuthControls";
+import { MobileMenu } from "./MobileMenu";
 
 export async function SiteHeader() {
   const [user, { dict }] = await Promise.all([getCurrentUser(), getDict()]);
@@ -20,6 +21,7 @@ export async function SiteHeader() {
           </Link>
         </nav>
         <div className="flex items-center gap-3">
+          <MobileMenu />
           <LocaleToggle />
           <AuthControls user={user ? { name: user.name, role: user.role } : null} />
         </div>
